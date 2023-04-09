@@ -2,7 +2,6 @@ package com.example.demo.controllers;
 
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,14 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.assembler.TarefaAssembler;
 import com.example.demo.domain.models.Tarefas;
-import com.example.demo.domain.models.Usuario;
 import com.example.demo.domain.repository.TarefaRepository;
-import com.example.demo.domain.repository.UsuarioRepository;
+
 import com.example.demo.domain.service.TarefasService;
 import com.example.demo.model.TarefaModel;
 import com.example.demo.model.input.TarefaInput;
+import com.example.demo.model.input.TarefaInputEditar;
 
-import ch.qos.logback.core.status.Status;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -34,7 +32,6 @@ import lombok.AllArgsConstructor;
 public class TarefaController {
     
     private TarefaRepository tarefaRepository;
-    private UsuarioRepository usuarioRepository;
     private TarefaAssembler tarefaAssembler;
     private TarefasService tarefasService;
 
@@ -65,9 +62,9 @@ public class TarefaController {
 
 
     @PutMapping("/editar/{tarefaId}")
-    public TarefaModel editarTarefa(@PathVariable Long tarefaId, @RequestBody TarefaInput tarefaInput){
-        Long usuarioId = tarefaInput.getUsuario().getId();
-        return tarefasService.editar(usuarioId, tarefaId, tarefaInput);
+    public TarefaModel editarTarefa(@PathVariable Long tarefaId, @RequestBody TarefaInputEditar tarefaInput){
+       // Long usuarioId = tarefaInput.getUsuario().getId();
+        return tarefasService.editar( tarefaId, tarefaInput);
     }
 
     //Deletar uma tarefa pelo ID de tarefa
@@ -87,7 +84,6 @@ public class TarefaController {
     }
 
 
-//88888888888888888888888888888888888888888888888888888888888888888888888888888
 
     @PutMapping("/editar/{tarefaId}/status")
     public Tarefas editarStatusTarefa(@PathVariable Long tarefaId){
@@ -95,11 +91,7 @@ public class TarefaController {
     }
 
 
-//88888888888888888888888888888888888888888888888888888888888888888888888888888
-
-
-
-     //Deleta todas as tarefas de um usuario
+    //Deleta todas as tarefas de um usuario
     @DeleteMapping("/user/{userId}")
     public void deletarTodasTarefasUser(@PathVariable Long userId){
         tarefasService.deletarTodasTarefasDoUsuario(userId);
@@ -108,10 +100,3 @@ public class TarefaController {
 
 
 }
-
-
-//Listar todas as tarefas de um usuario
-    // @GetMapping("/user/{userId}")
-    // public List<Tarefas> tarefaDeUmUsuario(@Valid @PathVariable Long userId){
-    //     return tarefaRepository.findByUsuarioId(userId);
-    // }

@@ -12,7 +12,8 @@ import com.example.demo.domain.models.Usuario;
 import com.example.demo.domain.repository.TarefaRepository;
 import com.example.demo.domain.repository.UsuarioRepository;
 import com.example.demo.model.TarefaModel;
-import com.example.demo.model.input.TarefaInput;
+
+import com.example.demo.model.input.TarefaInputEditar;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -39,16 +40,20 @@ public class TarefasService {
     @Transactional
     public Tarefas editarStatus(Long tarefaId){
         Tarefas tarefas = tarefaRepository.findById(tarefaId).orElseThrow(()-> new EntidadeNaoEncontradaExeption("Tarefa não encontrada"));
+        if(tarefas.getStatus()== Status.FINALIZADO){
+            tarefas.setStatus(Status.INICIAR);
+            return tarefaRepository.save(tarefas);
+        }
         tarefas.setStatus(Status.FINALIZADO);
         return tarefaRepository.save(tarefas);
     }
+ 
 
-
-    public TarefaModel editar(Long usuarioId, Long tarefaId, TarefaInput tarefaInput){
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(()-> new EntidadeNaoEncontradaExeption("Usuario não encontrado"));
+    public TarefaModel editar( Long tarefaId, TarefaInputEditar tarefaInput){
+      //  Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(()-> new EntidadeNaoEncontradaExeption("Usuario não encontrado"));
         Tarefas tarefas = tarefaRepository.findById(tarefaId).orElseThrow(()-> new EntidadeNaoEncontradaExeption("Tarefa não encontrada"));
         modelMapper.map(tarefaInput, tarefas);
-        tarefas.setUsuario(usuario);
+      //  tarefas.setUsuario(usuario);
         tarefas = tarefaRepository.save(tarefas);
         return modelMapper.map(tarefas, TarefaModel.class);
     }

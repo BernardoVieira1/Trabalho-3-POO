@@ -11,5 +11,8 @@ import com.example.demo.domain.models.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 
     Optional<Usuario> findByEmail(String email);
+    Optional<Usuario> findBySenha(String senha);
+    Optional<Usuario> findByEmailAndSenha(String email, String senha);
+
     
 }

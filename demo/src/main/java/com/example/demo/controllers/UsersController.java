@@ -19,6 +19,8 @@ import com.example.demo.domain.repository.UsuarioRepository;
 import com.example.demo.domain.service.TarefasService;
 import com.example.demo.domain.service.UsuarioService;
 
+import com.example.demo.model.input.LoginInput;
+
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -29,6 +31,7 @@ public class UsersController {
     private UsuarioRepository usuarioRepository;
     private TarefasService tarefasService;
     private UsuarioService usuarioService;
+
 
     //Listar todos os Usuario
     @GetMapping
@@ -72,7 +75,14 @@ public class UsersController {
         return ResponseEntity.noContent().build();
 
     }
-    
 
+
+    //Login
+    @PostMapping("/login")
+    public Usuario criar(@Valid @RequestBody LoginInput loginInput){
+        return usuarioService.login(loginInput);
+    }
+    
+   
 
 }

@@ -4,9 +4,12 @@ import jakarta.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.domain.exeption.EntidadeNaoEncontradaExeption;
 import com.example.demo.domain.exeption.NegocioException;
 import com.example.demo.domain.models.Usuario;
 import com.example.demo.domain.repository.UsuarioRepository;
+
+import com.example.demo.model.input.LoginInput;
 
 import lombok.AllArgsConstructor;
 
@@ -15,7 +18,6 @@ import lombok.AllArgsConstructor;
 public class UsuarioService {
     
     private UsuarioRepository usuarioRepository;
-
     
     public Usuario buscar(Long userId){
         return usuarioRepository.findById(userId)
@@ -38,7 +40,12 @@ public class UsuarioService {
 
     @Transactional
     public void excluir(Long userId){
-        usuarioRepository.deleteById(userId);;
+        usuarioRepository.deleteById(userId);
+
+    }
+
+    public Usuario login(LoginInput loginInput){
+     return usuarioRepository.findByEmailAndSenha(loginInput.getEmail(),loginInput.getSenha()).orElseThrow(()-> new EntidadeNaoEncontradaExeption("Email ou senha invalido"));
     }
 
 
