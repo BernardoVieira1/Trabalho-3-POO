@@ -5,6 +5,7 @@ import Logo from "../assets/Logo.svg"
 import { FormEvent, useState } from "react"
 import { api } from "@/lib/axios";
 import {useRouter} from "next/router";
+import Alert from "@/Components/Alert";
 
 export default function cadastro() {
   
@@ -13,6 +14,16 @@ export default function cadastro() {
   const [senha, setsenha] = useState('');
 
   const [submit,setSubmit] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);  
+
+
+  const [alertTitulo,setAlertTitulo] = useState('');
+  const [alertDes,setAlertDes] = useState('');
+  const [colorF,setColorF] = useState('');
+  const [colorB,setcolorB] = useState('');
+
+
+
   
   const router = useRouter();
 
@@ -29,11 +40,16 @@ export default function cadastro() {
 
         
         if(response.status === 200 ){
-           
-          alert("Usuario crido com sucesso!")
           setEmail("")
           setnome("")
           setsenha("")
+
+        setAlertTitulo("Sucesso!")
+        setAlertDes("Usuario cadastrado com sucesso!")
+        setColorF("bg-green-100")
+        setcolorB("border-green-200")
+        setOpenAlert(true)
+
 
           router.push("/")
 
@@ -43,12 +59,21 @@ export default function cadastro() {
 
     } catch (error) {
         console.log(error)
-        alert("falha ao criar usuario")
+        setAlertTitulo("Cadastro não realizado")
+        setAlertDes("Houve um erro ao cadastrar o usuário. Por favor, tente novamente")
+        setColorF("bg-red-100")
+        setcolorB("border-red-300")
+       setOpenAlert(true)
+  
     }
 
   }
   
   return (
+    <div>
+      <div className="flex justify-end animate__animated.animate__slideOutUp">
+        <Alert titulo={alertTitulo} msg={alertDes} colorB={colorB} colorF={colorF} isOpen={openAlert} onClose={()=> setOpenAlert(false)}/>
+      </div>
     <div className="flex h-screen justify-center items-center">
       <div>
         <Image className="" src={Logo} alt="LogoDoPrograma" />
@@ -88,6 +113,7 @@ export default function cadastro() {
         </main>
       </div>
        
+    </div>
     </div>
 
   )

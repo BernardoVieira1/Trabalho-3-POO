@@ -3,6 +3,7 @@ import { FormEvent, useState } from "react";
 import Image from "next/image";
 
 import Close from "../assets/fechar.svg"
+import Alert from "./Alert";
 
 interface Props{
     isOpen: boolean
@@ -14,6 +15,16 @@ export default function NovaTarefa(props: Props){
 
     const [titulo, settitulo] = useState('');
     const [descricao,setdescricao] = useState('')  
+
+
+    const [openAlert, setOpenAlert] = useState(false);  
+
+    const [alertTitulo,setAlertTitulo] = useState('');
+    const [alertDes,setAlertDes] = useState('');
+    const [colorF,setColorF] = useState('');
+    const [colorB,setcolorB] = useState('');
+
+
   
     async function cadastrarNovaTarefa(event: FormEvent){
       event.preventDefault()
@@ -28,8 +39,12 @@ export default function NovaTarefa(props: Props){
               descricao: descricao
           });
   
-          alert("Tarefa crida com sucesso!")
-  
+          setAlertTitulo("Sucesso!")
+            setAlertDes("Tarefa cadastrada com sucesso!")
+            setColorF("bg-green-100")
+            setcolorB("border-green-200")
+            setOpenAlert(true)
+
           settitulo("")
           setdescricao("")
 
@@ -37,16 +52,26 @@ export default function NovaTarefa(props: Props){
   
       } catch (error) {
           console.log(error)
-          alert("falha ao criar Tarefa")
+
+           setAlertTitulo("Tarefa não cadastrada")
+             setAlertDes("Houve um erro ao cadastrar a tarefa. Por favor, tente novamente")
+             setColorF("bg-red-100")
+             setcolorB("border-red-300")
+            setOpenAlert(true)
+
+        //  alert("falha ao criar Tarefa")
       }
   
     }
 
     return (
         <>
+        <div className="flex  justify-end animate__animated.animate__slideOutUp">
+         <Alert titulo={alertTitulo} msg={alertDes} colorB={colorB} colorF={colorF} isOpen={openAlert} onClose={()=> setOpenAlert(false)}/>
+        </div>
             {props.isOpen && (
                 <div className="z-10 w-full h-full bg-gray-100 flex fixed justify-center items-center">
-                    <div className="h-1/2 w-1/2 bg-gray-800 shadow-2xl rounded-2xl opacity-100">
+                    <div className=" w-1/2 bg-gray-800 shadow-2xl rounded-2xl opacity-100">
                         <div className="w-full flex justify-end">
                             <button onClick={props.onClose}>
                                 <Image className="mt-2 mr-2" height={30} src={Close} alt="" />
@@ -83,7 +108,7 @@ export default function NovaTarefa(props: Props){
                                         </div>
                                     </div>
 
-                                    <div className=" flex justify-center items-center mt-3">
+                                    <div className=" flex justify-center items-center mb-6 mt-3">
                                         <button
                                             className="bg-violet-500 p-2 rounded-lg text-white"
                                             type="submit"

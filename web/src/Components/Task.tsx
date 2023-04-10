@@ -35,20 +35,22 @@ export function Task(props: Props){
 
 
 const [editando,setEditando] = useState(false)
-const [editandoT,setEditandoT] = useState(false)
 const [editandoD,setEditandoD] = useState(false)
-const [titulo,setTitulo] = useState(props.titulo)
 const [descricao,setDescricao] = useState(props.descricao)
-const [verificar,setVerificar] = useState(false)
 
 
-function habilidarEdicao(){
+
+const [editandoT,setEditandoT] = useState(false)
+const [titulo,setTitulo] = useState(props.titulo)
+
+
+// function habilidarEdicao(){
   
-  editando ?  editarTitulo() : setEditando(true) 
-  editandoT ?  editarTitulo() : setEditandoT(true) 
-  editandoD ?  editarTitulo() : setEditandoD(true) 
+//   editando ?  editarTitulo() : setEditando(true) 
+//   editandoT ?  editarTitulo() : setEditandoT(true) 
+//   editandoD ?  editarTitulo() : setEditandoD(true) 
   
-}
+// }
 
 function edicaoTitulo(){
 
